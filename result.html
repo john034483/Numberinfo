@@ -15,7 +15,7 @@
   --panel-bg: rgba(17, 24, 39, 0.85);
   --accent-cyan: #00f2fe;
   --accent-purple: #4facfe;
-  --text-primary: #ffffff; /* Explicit pure white for readability */
+  --text-primary: #ffffff;
   --text-muted: #9ca3af;
   --border-color: rgba(0, 242, 254, 0.25);
   --glow: 0 0 15px rgba(0, 242, 254, 0.4);
@@ -204,7 +204,7 @@ h1 {
 #terminal::-webkit-scrollbar { width: 4px; }
 #terminal::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
 
-/* ── DATA FIELDS (FIXED FOR DETAIL VISIBILITY) ── */
+/* ── DATA FIELDS ── */
 .data-field {
   margin-bottom: 12px;
   padding: 14px 16px;
@@ -213,27 +213,22 @@ h1 {
   border-right: 1px solid rgba(255,255,255,0.02);
   border-bottom: 1px solid rgba(255,255,255,0.02);
   border-radius: 0 8px 8px 0;
-  background: rgba(0, 0, 0, 0.4); /* Darker contrast to make text pop */
+  background: rgba(0, 0, 0, 0.4);
   transition: all 0.2s;
-}
-
-.data-field:hover { 
-  background: rgba(0, 242, 254, 0.05); 
-  border-color: var(--accent-purple);
 }
 
 .data-field b {
   display: block;
   font-size: 11px;
   letter-spacing: 1.5px;
-  color: var(--accent-cyan); /* High visibility cyan */
+  color: var(--accent-cyan);
   font-weight: 700;
   margin-bottom: 6px;
   text-transform: uppercase;
 }
 
 .data-field span { 
-  color: #ffffff !important; /* Forces text to remain pure white */
+  color: #ffffff !important;
   font-size: 15px; 
   font-weight: 500;
   word-break: break-all;
@@ -306,10 +301,8 @@ h1 {
   background: var(--accent-cyan);
   color: var(--bg-color);
   box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
-  font-weight: bold;
 }
 
-/* Responsive */
 @media(max-width: 768px) {
   .grid  { grid-template-columns: 1fr; }
   .stats { grid-template-columns: repeat(2, 1fr); }
@@ -353,7 +346,6 @@ h1 {
 
 <!-- MAIN GRID -->
 <div class="grid">
-
   <!-- Terminal -->
   <div class="panel">
     <div class="panel-head">
@@ -382,12 +374,11 @@ h1 {
   <div id="mapBox">
     <div class="map-head">// GEOLOCATION DATA PING</div>
     <div class="map-body" id="mapInner">
-      <div style="color: var(--text-muted); font-size:12px; padding:40px 0; text-align:center; letter-spacing:2px;">
+      <div id="mapStatusText" style="color: var(--text-muted); font-size:12px; padding:40px 0; text-align:center; letter-spacing:2px;">
         AWAITING TARGET COORDINATES...
       </div>
     </div>
   </div>
-
 </div>
 
 <!-- FOOTER -->
@@ -396,8 +387,6 @@ h1 {
   <div class="credit">DESIGNED BY <span>PRINCE CHAURASIA</span></div>
   <button class="back-btn" onclick="window.location.href='index.html'">← DISCONNECT TERMINAL</button>
 </div>
-
-<audio id="successAudio" src="success.mp3"></audio>
 
 <script>
 /* ── CLOCK ── */
@@ -408,7 +397,6 @@ setInterval(function(){
   document.getElementById('clockBadge').textContent = t;
 }, 1000);
 
-/* ── UI HELPERS ── */
 function setProgress(pct, lbl){
   document.getElementById('progFill').style.width = pct + '%';
   document.getElementById('progLbl').textContent = lbl;
@@ -423,20 +411,16 @@ function showMap(addr){
     ' src="https://maps.google.com/maps?q=' + encodeURIComponent(addr) + '&z=14&output=embed"></iframe>';
 }
 
-/* ════════════════════════════════════
-   YOUR ORIGINAL WORKING JS — UNTOUCHED
-   ════════════════════════════════════ */
 const params = new URLSearchParams(window.location.search);
 const num = params.get('num');
 
 const terminal = document.getElementById("terminal");
 const dataDisplay = document.getElementById("dataDisplay");
 
-function log(text){
+function log(text, isError = false){
   const div = document.createElement("div");
   div.textContent = "> " + text;
-  div.style.color = text.includes("✔") ? "#10b981" :
-                    text.includes("Error") || text.includes("API:") ? "#f43f5e" : "#00f2fe";
+  div.style.color = isError ? "#f43f5e" : (text.includes("✔") ? "#10b981" : "#00f2fe");
   terminal.appendChild(div);
   terminal.scrollTop = terminal.scrollHeight;
 }
@@ -447,7 +431,6 @@ function addField(label, value){
   div.innerHTML = "<b>" + label + "</b><span>" + (value || "N/A") + "</span>";
   dataDisplay.appendChild(div);
 
-  // update field count
   const cur = parseInt(document.getElementById('s1').textContent) || 0;
   document.getElementById('s1').textContent = String(cur + 1).padStart(2, '0');
 }
@@ -464,7 +447,6 @@ function showAllData(data){
         render(value, prefix + key + " → ");
       } else {
         addField((prefix + key).toUpperCase(), value);
-
         if(key.toLowerCase().includes("address") && value){
           showMap(value);
         }
@@ -476,8 +458,7 @@ function showAllData(data){
 
 async function start(){
   if(!num){
-    log("No number provided");
-    log("Usage: ?num=XXXXXXXXXX");
+    log("No number provided", true);
     setStatus("NO TARGET");
     setProgress(100, "IDLE");
     return;
@@ -493,16 +474,17 @@ async function start(){
   try{
     const res = await fetch("/api/getdata?num=" + encodeURIComponent(num));
     const json = await res.json();
-    console.log("API:", json);
 
     document.getElementById('s2').textContent = (Date.now() - t0) + "ms";
     document.getElementById('s3').textContent = "SHIELD";
     setProgress(60, "DECRYPTING PACKETS...");
 
-    if(json.status === false){
-      log("API Error: " + json.message);
-      setStatus("API ERROR");
-      setProgress(100, "ERROR");
+    // UPGRADED LOGIC: Check if API explicitly throws 'success: false' OR gives 'Failed to fetch data' message
+    if(json.status === false || (json.message && json.message.toLowerCase().includes("failed"))){
+      log("API Error: " + (json.message || "Failed to fetch data"), true);
+      dataDisplay.innerHTML = `<div style="color:#f43f5e; font-size:14px; text-align:center; padding:20px; font-weight:bold; border:1px dashed rgba(244,63,94,0.3); border-radius:8px; background:rgba(244,63,94,0.05);">⚠ TRACE FAILED: API backend server down or token expired.</div>`;
+      setStatus("API ERROR ⚠");
+      setProgress(100, "FAILED");
       return;
     }
 
@@ -512,7 +494,7 @@ async function start(){
     else data = json;
 
     if(!data){
-      log("No matrix data found");
+      log("No data streams found in response.", true);
       setStatus("NO DATA");
       setProgress(100, "NO RESULTS");
       return;
@@ -527,14 +509,9 @@ async function start(){
     log("Process Complete ✔");
     setStatus("SUCCESS ✔");
 
-    try{
-      var a = document.getElementById('successAudio');
-      a.currentTime = 0;
-      a.play().catch(function(){});
-    }catch(e){}
-
-  }catch(e){
-    log("Fatal Error: " + e.message);
+  } catch(e) {
+    log("Fatal Connection Error: " + e.message, true);
+    dataDisplay.innerHTML = `<div style="color:#f43f5e; font-size:14px; text-align:center; padding:20px; font-weight:bold;">⚠ SERVER CRASHED OR UNREACHABLE</div>`;
     setStatus("CRASHED");
     setProgress(100, "FAILED");
   }
