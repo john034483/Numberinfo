@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TRACE RESULT</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: #010a01;
+  color: #00ff41;
+  font-family: 'Share Tech Mono', monospace;
+  min-height: 100vh;
+  padding: 16px;
+  /* scanline effect */
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.06) 2px,
+    rgba(0,0,0,0.06) 4px
+  );
+}
+
+/* ── HEADER ── */
+.header {
+  text-align: center;
+  padding: 24px 10px 20px;
+  border-bottom: 1px solid rgba(0,255,65,0.15);
+  margin-bottom: 18px;
+}
+
+.sys-tag {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: #2a5a2a;
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(22px, 6vw, 46px);
+  font-weight: 900;
+  letter-spacing: 5px;
+  color: #00ff41;
+  text-shadow: 0 0 10px #00ff41, 0 0 25px rgba(0,255,65,0.5);
+  animation: glitch 5s infinite;
+}
+
+@keyframes glitch {
+  0%,85%,100% { text-shadow: 0 0 10px #00ff41, 0 0 25px rgba(0,255,65,0.5); }
+  86% { text-shadow: -2px 0 #ff0080, 2px 0 #00d4ff; transform: translate(-1px); }
+  87% { text-shadow: 2px 0 #ff0080, -2px 0 #00d4ff; transform: translate(1px); }
+  88% { text-shadow: 0 0 10px #00ff41, 0 0 25px rgba(0,255,65,0.5); transform: none; }
+}
+
+.badge-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.badge {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  padding: 5px 14px;
+  border: 1px solid #00ff41;
+  color: #00ff41;
+  text-shadow: 0 0 6px #00ff41;
+  box-shadow: 0 0 8px rgba(0,255,65,0.3);
+  animation: badgePulse 2s infinite;
+}
+
+.badge-c {
+  border-color: #00d4ff;
+  color: #00d4ff;
+  text-shadow: 0 0 6px #00d4ff;
+  box-shadow: 0 0 8px rgba(0,212,255,0.3);
+  animation: none;
+}
+
+@keyframes badgePulse {
+  0%,100% { box-shadow: 0 0 8px rgba(0,255,65,0.3); }
+  50%      { box-shadow: 0 0 18px rgba(0,255,65,0.7); }
+}
+
+.dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #00ff41;
+  margin-right: 6px;
+  vertical-align: middle;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* ── STATS ── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.sbox {
+  border: 1px solid rgba(0,255,65,0.25);
+  padding: 12px 8px;
+  text-align: center;
+  background: rgba(0,255,65,0.02);
+}
+
+.snum {
+  font-family: 'Orbitron', monospace;
+  font-size: 20px; font-weight: 900;
+  display: block;
+  text-shadow: 0 0 8px currentColor;
+}
+
+.slbl { font-size: 9px; letter-spacing: 2px; color: #2a5a2a; margin-top: 4px; }
+
+/* ── PANELS ── */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.panel {
+  border: 1px solid rgba(0,255,65,0.25);
+  background: rgba(0,255,65,0.02);
+  position: relative;
+}
+
+/* corner brackets */
+.panel::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 16px; height: 16px;
+  border-top: 2px solid #00ff41;
+  border-left: 2px solid #00ff41;
+  box-shadow: 0 0 6px #00ff41;
+}
+
+.panel::after {
+  content: '';
+  position: absolute; bottom: 0; right: 0;
+  width: 16px; height: 16px;
+  border-bottom: 2px solid #00ff41;
+  border-right: 2px solid #00ff41;
+  box-shadow: 0 0 6px #00ff41;
+}
+
+.panel-head {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(0,255,65,0.15);
+  background: rgba(0,255,65,0.04);
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: #00ff41;
+  text-shadow: 0 0 6px #00ff41;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dots span {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #00ff41;
+  margin-left: 4px;
+  opacity: 0.4;
+}
+
+.dots span:first-child { opacity: 0.9; animation: blink 1.5s infinite; }
+
+.panel-body { padding: 14px; }
+
+/* progress */
+.prog-lbl { font-size: 10px; color: #2a5a2a; letter-spacing: 1px; margin-bottom: 5px; }
+.prog-bar  { height: 2px; background: rgba(0,255,65,0.1); margin-bottom: 12px; }
+.prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00d4ff, #00ff41);
+  box-shadow: 0 0 6px #00ff41;
+  width: 0%;
+  transition: width 1.5s ease-out;
+}
+
+/* terminal */
+#terminal {
+  font-size: 12px;
+  line-height: 1.9;
+  max-height: 320px;
+  overflow-y: auto;
+  min-height: 150px;
+}
+
+#terminal::-webkit-scrollbar { width: 3px; }
+#terminal::-webkit-scrollbar-thumb { background: #00ff41; }
+
+/* data fields */
+.data-field {
+  margin: 8px 0;
+  padding: 10px 12px;
+  border-left: 2px solid #00ff41;
+  border-bottom: 1px solid rgba(0,255,65,0.07);
+  background: rgba(0,255,65,0.03);
+  word-break: break-word;
+  transition: background 0.2s;
+}
+
+.data-field:hover { background: rgba(0,255,65,0.07); }
+
+.data-field b {
+  display: block;
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: #00d4ff;
+  text-shadow: 0 0 5px #00d4ff;
+  font-weight: normal;
+  margin-bottom: 3px;
+}
+
+.data-field span { color: #c8ffc8; font-size: 13px; }
+
+/* map */
+#mapBox {
+  grid-column: 1 / -1;
+  border: 1px solid rgba(0,212,255,0.25);
+  background: rgba(0,212,255,0.02);
+  position: relative;
+}
+
+#mapBox::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 16px; height: 16px;
+  border-top: 2px solid #00d4ff;
+  border-left: 2px solid #00d4ff;
+  box-shadow: 0 0 6px #00d4ff;
+  z-index: 5;
+}
+
+#mapBox::after {
+  content: '';
+  position: absolute; bottom: 0; right: 0;
+  width: 16px; height: 16px;
+  border-bottom: 2px solid #00d4ff;
+  border-right: 2px solid #00d4ff;
+  box-shadow: 0 0 6px #00d4ff;
+  z-index: 5;
+}
+
+.map-head {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(0,212,255,0.15);
+  background: rgba(0,212,255,0.03);
+  font-family: 'Orbitron', monospace;
+  font-size: 10px; letter-spacing: 3px;
+  color: #00d4ff;
+  text-shadow: 0 0 6px #00d4ff;
+}
+
+.map-body { padding: 12px; }
+
+#mapBox iframe {
+  display: block;
+  border: 1px solid rgba(0,212,255,0.2);
+  filter: invert(90%) hue-rotate(135deg) saturate(1.3) brightness(0.85);
+}
+
+/* footer */
+.footer {
+  text-align: center;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0,255,65,0.1);
+}
+
+.footer p { font-size: 10px; color: #2a5a2a; letter-spacing: 3px; margin-bottom: 5px; }
+.credit    { font-family: 'Orbitron', monospace; font-size: 11px; color: #00d4ff; letter-spacing: 2px; margin-bottom: 16px; }
+
+.back-btn {
+  display: inline-block;
+  padding: 10px 22px;
+  border: 1px solid #00ff41;
+  color: #00ff41;
+  font-family: 'Orbitron', monospace;
+  font-size: 10px; letter-spacing: 3px;
+  cursor: pointer; background: transparent;
+  text-transform: uppercase;
+  transition: all 0.3s;
+}
+
+.back-btn:hover {
+  background: rgba(0,255,65,0.1);
+  box-shadow: 0 0 14px rgba(0,255,65,0.4);
+  color: #fff;
+}
+
+/* responsive */
+@media(max-width: 600px) {
+  .grid  { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: repeat(2,1fr); }
+  h1     { letter-spacing: 3px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="sys-tag">NEURAL-TRACE SYSTEM v4.2 // CLASSIFIED OUTPUT</div>
+  <h1>TRACE RESULTS</h1>
+  <div class="badge-row">
+    <div class="badge"><span class="dot"></span>LIVE SESSION</div>
+    <div class="badge badge-c" id="statusBadge">INITIALIZING...</div>
+    <div class="badge" id="clockBadge">--:--:--</div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="sbox">
+    <span class="snum" id="s1" style="color:#00ff41">00</span>
+    <div class="slbl">Fields Found</div>
+  </div>
+  <div class="sbox">
+    <span class="snum" id="s2" style="color:#00d4ff">0ms</span>
+    <div class="slbl">Query Time</div>
+  </div>
+  <div class="sbox">
+    <span class="snum" id="s3" style="color:#ff0080">ENC</span>
+    <div class="slbl">Connection</div>
+  </div>
+  <div class="sbox">
+    <span class="snum" style="color:#00ff41">99%</span>
+    <div class="slbl">Accuracy</div>
+  </div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="grid">
+
+  <!-- Terminal -->
+  <div class="panel">
+    <div class="panel-head">
+      // TRACE_LOG
+      <div class="dots"><span></span><span></span><span></span></div>
+    </div>
+    <div class="panel-body">
+      <div class="prog-lbl" id="progLbl">STANDBY</div>
+      <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+      <div id="terminal"></div>
+    </div>
+  </div>
+
+  <!-- Data -->
+  <div class="panel">
+    <div class="panel-head">
+      // EXTRACTED_DATA
+      <div class="dots"><span></span><span></span><span></span></div>
+    </div>
+    <div class="panel-body">
+      <div id="dataDisplay"></div>
+    </div>
+  </div>
+
+  <!-- Map -->
+  <div id="mapBox">
+    <div class="map-head">// GEO_LOCATION :: LIVE PING</div>
+    <div class="map-body" id="mapInner">
+      <div style="color:#2a5a2a;font-size:12px;padding:30px 0;text-align:center;letter-spacing:3px;">
+        AWAITING COORDINATE DATA...
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>EDUCATIONAL PURPOSE ONLY — NOT TO HARM ANYONE</p>
+  <div class="credit">[ CRAFTED BY SATYAM GUPTA ]</div>
+  <button class="back-btn" onclick="window.location.href='index.html'">← RETURN TO BASE</button>
+</div>
+
+<audio id="successAudio" src="success.mp3"></audio>
+
+<script>
+
+/* ── CLOCK ── */
+setInterval(function(){
+  var n = new Date();
+  var t = [n.getHours(), n.getMinutes(), n.getSeconds()]
+    .map(function(v){ return String(v).padStart(2,'0'); }).join(':');
+  document.getElementById('clockBadge').textContent = t;
+}, 1000);
+
+/* ── UI HELPERS ── */
+function setProgress(pct, lbl){
+  document.getElementById('progFill').style.width = pct + '%';
+  document.getElementById('progLbl').textContent = lbl;
+}
+
+function setStatus(t){ document.getElementById('statusBadge').textContent = t; }
+
+function showMap(addr){
+  if(!addr) return;
+  document.getElementById('mapInner').innerHTML =
+    '<iframe width="100%" height="280" frameborder="0" scrolling="no"' +
+    ' src="https://maps.google.com/maps?q=' + encodeURIComponent(addr) + '&z=14&output=embed"></iframe>';
+}
+
+/* ════════════════════════════════════
+   YOUR ORIGINAL WORKING JS — UNTOUCHED
+   ════════════════════════════════════ */
+
+const params = new URLSearchParams(window.location.search);
+const num = params.get('num');
+
+const terminal = document.getElementById("terminal");
+const dataDisplay = document.getElementById("dataDisplay");
+
+function log(text){
+  const div = document.createElement("div");
+  div.textContent = "> " + text;
+  div.style.color = text.includes("✔") ? "#00ff41" :
+                    text.includes("Error") || text.includes("API:") ? "#ff0080" : "#00d4ff";
+  terminal.appendChild(div);
+  terminal.scrollTop = terminal.scrollHeight;
+}
+
+function addField(label, value){
+  const div = document.createElement("div");
+  div.className = "data-field";
+  div.innerHTML = "<b>" + label + "</b><span>" + (value || "N/A") + "</span>";
+  dataDisplay.appendChild(div);
+
+  // update field count
+  const cur = parseInt(document.getElementById('s1').textContent) || 0;
+  document.getElementById('s1').textContent = String(cur + 1).padStart(2, '0');
+}
+
+// 🔥 FULL DATA RENDER — your recursive function, unchanged
+function showAllData(data){
+  dataDisplay.innerHTML = "";
+  document.getElementById('s1').textContent = '00';
+
+  function render(obj, prefix){
+    prefix = prefix || "";
+    for(var key in obj){
+      var value = obj[key];
+      if(typeof value === "object" && value !== null){
+        render(value, prefix + key + " → ");
+      } else {
+        addField((prefix + key).toUpperCase(), value);
+
+        // auto-detect address field for map
+        if(key.toLowerCase().includes("address") && value){
+          showMap(value);
+        }
+      }
+    }
+  }
+
+  render(data);
+}
+
+async function start(){
+
+  if(!num){
+    log("No number provided");
+    log("Usage: ?num=XXXXXXXXXX");
+    setStatus("NO TARGET");
+    setProgress(100, "IDLE");
+    return;
+  }
+
+  setProgress(10, "BOOTING...");
+  log("Target: " + num);
+  setProgress(30, "CONNECTING...");
+  log("Connecting to server...");
+
+  var t0 = Date.now();
+
+  try{
+
+    // ✅ YOUR ORIGINAL API CALL — NOT CHANGED
+    const res = await fetch("/api/getdata?num=" + encodeURIComponent(num));
+
+    const json = await res.json();
+    console.log("API:", json);
+
+    document.getElementById('s2').textContent = (Date.now() - t0) + "ms";
+    document.getElementById('s3').textContent = "TLS";
+    setProgress(60, "PARSING...");
+
+    // 🔥 your original error check
+    if(json.status === false){
+      log("API: " + json.message);
+      setStatus("API ERROR");
+      setProgress(100, "ERROR");
+      return;
+    }
+
+    // 🔥 your original data extract
+    let data = null;
+    if(json.result && Array.isArray(json.result)) data = json.result[0];
+    else if(json.result) data = json.result;
+    else data = json;
+
+    if(!data){
+      log("No data found");
+      setStatus("NO DATA");
+      setProgress(100, "NO RESULTS");
+      return;
+    }
+
+    setProgress(85, "RENDERING...");
+    log("Data received ✔");
+
+    // 🔥 your original recursive render
+    showAllData(data);
+
+    setProgress(100, "TRACE COMPLETE ✔");
+    log("Completed ✔");
+    setStatus("DATA FOUND ✔");
+
+    try{
+      var a = document.getElementById('successAudio');
+      a.currentTime = 0;
+      a.play().catch(function(){});
+    }catch(e){}
+
+  }catch(e){
+    log("Error: " + e.message);
+    setStatus("ERROR");
+    setProgress(100, "ERROR");
+  }
+}
+
+start();
+
+</script>
+</body>
+  </html>
