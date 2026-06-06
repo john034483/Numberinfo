@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const url = `https://pawan-osint.vercel.app/api?apikey=toxicadminn&number=${num}`;
+    const url = `https://tabbopro.vercel.app/api/key-tabbo/number`;
     // 🔥 IMPORTANT: fetch ko safe banaya
     const response = await fetch(url, {
       method: "GET"
