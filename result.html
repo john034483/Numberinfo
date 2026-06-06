@@ -12,12 +12,12 @@
 
 :root {
   --bg-color: #030712;
-  --panel-bg: rgba(17, 24, 39, 0.7);
+  --panel-bg: rgba(17, 24, 39, 0.85);
   --accent-cyan: #00f2fe;
   --accent-purple: #4facfe;
-  --text-primary: #f3f4f6;
-  --text-muted: #6b7280;
-  --border-color: rgba(0, 242, 254, 0.2);
+  --text-primary: #ffffff; /* Explicit pure white for readability */
+  --text-muted: #9ca3af;
+  --border-color: rgba(0, 242, 254, 0.25);
   --glow: 0 0 15px rgba(0, 242, 254, 0.4);
 }
 
@@ -87,7 +87,7 @@ h1 {
   border-radius: 30px;
   border: 1px solid var(--border-color);
   background: rgba(0, 0, 0, 0.4);
-  color: var(--text-primary);
+  color: #ffffff;
 }
 
 .badge-c {
@@ -124,12 +124,6 @@ h1 {
   text-align: center;
   background: var(--panel-bg);
   backdrop-filter: blur(4px);
-  transition: transform 0.2s, border-color 0.2s;
-}
-
-.sbox:hover {
-  transform: translateY(-2px);
-  border-color: var(--accent-cyan);
 }
 
 .snum {
@@ -204,37 +198,46 @@ h1 {
   max-height: 320px;
   overflow-y: auto;
   min-height: 180px;
-  color: #d1d5db;
+  color: #e5e7eb;
 }
 
 #terminal::-webkit-scrollbar { width: 4px; }
 #terminal::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
 
-/* Data Fields */
+/* ── DATA FIELDS (FIXED FOR DETAIL VISIBILITY) ── */
 .data-field {
   margin-bottom: 12px;
-  padding: 12px 16px;
-  border: 1px solid rgba(255,255,255,0.03);
-  border-radius: 8px;
-  background: rgba(0,0,0,0.2);
+  padding: 14px 16px;
+  border-left: 3px solid var(--accent-cyan);
+  border-top: 1px solid rgba(255,255,255,0.02);
+  border-right: 1px solid rgba(255,255,255,0.02);
+  border-bottom: 1px solid rgba(255,255,255,0.02);
+  border-radius: 0 8px 8px 0;
+  background: rgba(0, 0, 0, 0.4); /* Darker contrast to make text pop */
   transition: all 0.2s;
 }
 
 .data-field:hover { 
-  background: rgba(0, 242, 254, 0.03); 
-  border-color: rgba(0, 242, 254, 0.15);
+  background: rgba(0, 242, 254, 0.05); 
+  border-color: var(--accent-purple);
 }
 
 .data-field b {
   display: block;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 1.5px;
-  color: var(--accent-purple);
-  font-weight: 500;
-  margin-bottom: 5px;
+  color: var(--accent-cyan); /* High visibility cyan */
+  font-weight: 700;
+  margin-bottom: 6px;
+  text-transform: uppercase;
 }
 
-.data-field span { color: #ffffff; font-size: 14px; }
+.data-field span { 
+  color: #ffffff !important; /* Forces text to remain pure white */
+  font-size: 15px; 
+  font-weight: 500;
+  word-break: break-all;
+}
 
 /* Map */
 #mapBox {
@@ -260,7 +263,6 @@ h1 {
   display: block;
   border-radius: 8px;
   border: 1px solid rgba(0, 242, 254, 0.1);
-  /* Sleek dark map overlay effect */
   filter: invert(90%) hue-rotate(190deg) contrast(1.2) brightness(0.9);
 }
 
