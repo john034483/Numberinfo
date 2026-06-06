@@ -2,17 +2,29 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>CYBER TRACE X :: NUMBER LOOKUP</title>
+<title>PRINCE OS :: NUMBER LOOKUP</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<!-- Modern & Clean Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syncopate:wght@700&display=swap" rel="stylesheet">
 
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 
+:root {
+  --bg-color: #030712;
+  --panel-bg: rgba(17, 24, 39, 0.85);
+  --accent-cyan: #00f2fe;
+  --accent-purple: #4facfe;
+  --text-primary: #f3f4f6;
+  --text-muted: #4b5563;
+  --border-color: rgba(0, 242, 254, 0.25);
+  --glow: 0 0 15px rgba(0, 242, 254, 0.4);
+}
+
 body {
-  background: #010a01;
-  color: #00ff41;
-  font-family: 'Share Tech Mono', monospace;
+  background: var(--bg-color);
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -22,7 +34,7 @@ body {
   position: relative;
   background-image: repeating-linear-gradient(
     0deg, transparent, transparent 2px,
-    rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px
+    rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px
   );
 }
 
@@ -31,7 +43,7 @@ body::after {
   content:'';
   position:fixed; top:0; left:0;
   width:100%; height:100%;
-  background:radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.9) 100%);
+  background:radial-gradient(ellipse at center, transparent 25%, rgba(3, 7, 18, 0.9) 100%);
   pointer-events:none; z-index:0;
 }
 
@@ -39,7 +51,7 @@ body::after {
 #mc {
   position:fixed; top:0; left:0;
   width:100%; height:100%;
-  z-index:0; opacity:0.07;
+  z-index:0; opacity:0.08;
   pointer-events:none;
 }
 
@@ -47,10 +59,13 @@ body::after {
 .box {
   position:relative; z-index:10;
   width:92%; max-width:520px;
-  border:1px solid rgba(0,255,65,0.3);
-  background:rgba(1,10,1,0.85);
+  border:1px solid var(--border-color);
+  background:var(--panel-bg);
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
   padding:0;
-  animation:boxIn 0.6s ease-out both;
+  box-shadow: inset 0 0 30px rgba(0, 242, 254, 0.05), 0 10px 30px rgba(0,0,0,0.5);
+  animation:boxIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 @keyframes boxIn {
@@ -58,30 +73,32 @@ body::after {
   to   { opacity:1; transform:translateY(0); }
 }
 
-/* corner brackets */
+/* Custom Sleek Corners */
 .box::before {
   content:'';
   position:absolute; top:0; left:0;
-  width:20px; height:20px;
-  border-top:2px solid #00ff41;
-  border-left:2px solid #00ff41;
-  box-shadow:0 0 8px #00ff41;
+  width:24px; height:24px;
+  border-top:3px solid var(--accent-cyan);
+  border-left:3px solid var(--accent-cyan);
+  border-top-left-radius: 16px;
+  box-shadow:var(--glow);
 }
 
 .box::after {
   content:'';
   position:absolute; bottom:0; right:0;
-  width:20px; height:20px;
-  border-bottom:2px solid #00ff41;
-  border-right:2px solid #00ff41;
-  box-shadow:0 0 8px #00ff41;
+  width:24px; height:24px;
+  border-bottom:3px solid var(--accent-cyan);
+  border-right:3px solid var(--accent-cyan);
+  border-bottom-right-radius: 16px;
+  box-shadow:var(--glow);
 }
 
 /* scanning beam */
 .scan-beam {
   position:absolute; top:0; left:-100%; width:50%; height:1px;
-  background:linear-gradient(90deg, transparent, #00ff41, transparent);
-  animation:beam 4s linear infinite;
+  background:linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+  animation:beam 3.5s linear infinite;
   z-index:1;
 }
 @keyframes beam { 0%{left:-100%} 100%{left:200%} }
@@ -89,114 +106,118 @@ body::after {
 /* ── HEADER BAR ── */
 .box-head {
   padding:14px 20px;
-  border-bottom:1px solid rgba(0,255,65,0.2);
-  background:rgba(0,255,65,0.04);
+  border-bottom:1px solid var(--border-color);
+  background:rgba(0, 242, 254, 0.03);
   display:flex; align-items:center; justify-content:space-between;
 }
 
 .box-head-title {
-  font-family:'Orbitron', monospace;
+  font-family:'Syncopate', sans-serif;
   font-size:10px; font-weight:700;
-  letter-spacing:3px; color:#00ff41;
-  text-shadow:0 0 8px #00ff41;
+  letter-spacing:4px; color:var(--accent-cyan);
+  text-shadow:var(--glow);
 }
 
 .head-dots span {
   display:inline-block;
-  width:7px; height:7px; border-radius:50%;
-  background:#00ff41; margin-left:5px; opacity:0.35;
+  width:6px; height:6px; border-radius:50%;
+  background:var(--accent-cyan); margin-left:6px; opacity:0.3;
 }
 
 .head-dots span:first-child { opacity:0.9; animation:blink 1.5s infinite; }
 .head-dots span:nth-child(2){ animation:blink 1.5s 0.5s infinite; }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
 /* ── BODY ── */
-.box-body { padding:30px 28px; }
+.box-body { padding:36px 30px; }
 
 /* brand */
 .brand {
   text-align:center;
   font-size:10px; letter-spacing:5px;
-  color:#2a5a2a; margin-bottom:10px;
+  color:var(--accent-purple); margin-bottom:14px;
+  font-weight: 700;
 }
 
 /* title */
 h1 {
-  font-family:'Orbitron', monospace;
-  font-size:clamp(22px,6vw,42px);
-  font-weight:900; letter-spacing:5px;
+  font-family:'Syncopate', sans-serif;
+  font-size:clamp(18px, 5vw, 28px);
+  font-weight:700; letter-spacing:6px;
   text-align:center;
-  color:#00ff41;
-  text-shadow:0 0 10px #00ff41, 0 0 28px rgba(0,255,65,0.5);
-  margin-bottom:6px;
+  color:#ffffff;
+  text-shadow: 0 0 20px rgba(255,255,255,0.2);
+  margin-bottom:8px;
   animation:glitch 5s infinite;
 }
 
 @keyframes glitch {
-  0%,85%,100% { text-shadow:0 0 10px #00ff41,0 0 28px rgba(0,255,65,0.5); transform:none; }
+  0%,85%,100% { text-shadow:0 0 20px rgba(255,255,255,0.2); transform:none; }
   86% { text-shadow:-2px 0 #ff0080,2px 0 #00d4ff; transform:translate(-1px); }
   87% { text-shadow:2px 0 #ff0080,-2px 0 #00d4ff; transform:translate(1px); }
-  88% { text-shadow:0 0 10px #00ff41,0 0 28px rgba(0,255,65,0.5); transform:none; }
+  88% { text-shadow:0 0 20px rgba(255,255,255,0.2); transform:none; }
 }
 
 .subtitle {
   text-align:center;
   font-size:11px; letter-spacing:2px;
-  color:#2a5a2a; margin-bottom:28px;
+  color:var(--text-muted); margin-bottom:30px;
+  text-transform: uppercase;
 }
 
 /* divider */
 .divider {
   height:1px;
-  background:linear-gradient(90deg,transparent,rgba(0,255,65,0.3),transparent);
-  margin:20px 0;
+  background:linear-gradient(90deg,transparent,var(--border-color),transparent);
+  margin:24px 0;
 }
 
 /* input label */
 .input-label {
-  font-family:'Orbitron', monospace;
-  font-size:9px; letter-spacing:3px;
-  color:#00d4ff; text-shadow:0 0 6px #00d4ff;
-  margin-bottom:8px; display:block;
+  font-size:10px; letter-spacing:2px;
+  color:var(--accent-purple);
+  margin-bottom:10px; display:block;
+  font-weight: 500;
 }
 
 /* input */
-.input-wrap { position:relative; margin-bottom:18px; }
+.input-wrap { position:relative; margin-bottom:20px; }
 
 .input-wrap::before {
   content:'>';
-  position:absolute; left:14px; top:50%; transform:translateY(-50%);
-  color:#00ff41; font-size:14px;
-  text-shadow:0 0 6px #00ff41;
+  position:absolute; left:16px; top:50%; transform:translateY(-50%);
+  color:var(--accent-cyan); font-size:14px;
+  text-shadow:var(--glow);
 }
 
 input[type="tel"] {
   width:100%;
-  padding:14px 14px 14px 34px;
-  background:rgba(0,255,65,0.03);
-  border:1px solid rgba(0,255,65,0.25);
-  color:#00ff41;
-  font-family:'Share Tech Mono', monospace;
+  padding:14px 14px 14px 38px;
+  background:rgba(0,0,0,0.3);
+  border:1px solid var(--border-color);
+  border-radius: 8px;
+  color:#ffffff;
+  font-family:'JetBrains Mono', monospace;
   font-size:15px; letter-spacing:2px;
   outline:none;
   transition:all 0.3s;
 }
 
-input[type="tel"]::placeholder { color:#2a5a2a; letter-spacing:1px; }
+input[type="tel"]::placeholder { color:var(--text-muted); letter-spacing:1px; }
 
 input[type="tel"]:focus {
-  border-color:#00ff41;
-  background:rgba(0,255,65,0.06);
-  box-shadow:0 0 14px rgba(0,255,65,0.3), inset 0 0 10px rgba(0,255,65,0.05);
+  border-color:var(--accent-cyan);
+  background:rgba(0, 242, 254, 0.03);
+  box-shadow:0 0 15px rgba(0, 242, 254, 0.2);
 }
 
 /* error msg */
 .err-msg {
-  font-size:11px; color:#ff0080;
-  text-shadow:0 0 6px #ff0080;
-  margin:-10px 0 14px;
+  font-size:11px; color:#f43f5e;
+  text-shadow:0 0 8px rgba(244, 63, 94, 0.4);
+  margin:-12px 0 16px;
   display:none; letter-spacing:1px;
+  font-weight: 500;
 }
 
 /* button */
@@ -204,29 +225,31 @@ input[type="tel"]:focus {
   width:100%;
   padding:14px;
   background:transparent;
-  border:1px solid #00ff41;
-  color:#00ff41;
-  font-family:'Orbitron', monospace;
+  border:1px solid var(--accent-cyan);
+  border-radius: 30px;
+  color:var(--accent-cyan);
+  font-family:'JetBrains Mono', monospace;
   font-size:12px; font-weight:700;
-  letter-spacing:4px; text-transform:uppercase;
+  letter-spacing:3px; text-transform:uppercase;
   cursor:pointer;
   position:relative; overflow:hidden;
   transition:all 0.3s;
-  text-shadow:0 0 8px #00ff41;
-  box-shadow:0 0 12px rgba(0,255,65,0.2);
+  text-shadow:var(--glow);
+  box-shadow:inset 0 0 10px rgba(0, 242, 254, 0.1);
 }
 
 .btn::before {
   content:'';
   position:absolute; top:0; left:-100%; width:100%; height:100%;
-  background:linear-gradient(90deg,transparent,rgba(0,255,65,0.18),transparent);
+  background:linear-gradient(90deg,transparent,rgba(0, 242, 254, 0.15),transparent);
   transition:left 0.45s;
 }
 
 .btn:hover::before { left:100%; }
 .btn:hover {
-  box-shadow:0 0 24px rgba(0,255,65,0.5);
-  color:#fff;
+  background: var(--accent-cyan);
+  color: var(--bg-color);
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
 }
 
 .btn:active { transform:scale(0.98); }
@@ -234,43 +257,44 @@ input[type="tel"]:focus {
 
 /* features */
 .features {
-  margin-top:22px;
-  padding-top:18px;
-  border-top:1px solid rgba(0,255,65,0.1);
+  margin-top:24px;
+  padding-top:20px;
+  border-top:1px solid rgba(255,255,255,0.05);
 }
 
 .feat {
-  display:flex; align-items:center; gap:10px;
-  font-size:11px; color:#2a5a2a;
-  padding:6px 0;
+  display:flex; align-items:center; gap:12px;
+  font-size:12px; color:var(--text-muted);
+  padding:8px 0;
   letter-spacing:1px;
-  border-bottom:1px solid rgba(0,255,65,0.04);
+  border-bottom:1px solid rgba(255,255,255,0.02);
   transition:color 0.3s;
 }
 
-.feat:hover { color:#00ff41; }
+.feat:hover { color:var(--text-primary); }
 .feat:last-child { border-bottom:none; }
 
 .feat-icon {
-  color:#00d4ff;
-  text-shadow:0 0 6px #00d4ff;
+  color:var(--accent-cyan);
+  text-shadow:var(--glow);
   font-size:12px; flex-shrink:0;
 }
 
 /* footer */
 .footer {
   position:fixed; bottom:16px;
-  font-size:10px; color:#2a5a2a;
+  font-size:11px; color:var(--text-muted);
   letter-spacing:2px; text-align:center;
   z-index:10;
+  text-transform: uppercase;
 }
 
-.footer a { color:#00d4ff; text-decoration:none; }
-.footer a:hover { text-shadow:0 0 8px #00d4ff; }
+.footer a { color:var(--accent-cyan); text-decoration:none; font-weight: bold; }
+.footer a:hover { text-shadow:var(--glow); }
 
 @media(max-width:480px){
-  .box-body { padding:22px 18px; }
-  h1 { letter-spacing:3px; }
+  .box-body { padding:24px 20px; }
+  h1 { letter-spacing:4px; }
 }
 </style>
 </head>
@@ -282,72 +306,72 @@ input[type="tel"]:focus {
   <div class="scan-beam"></div>
 
   <div class="box-head">
-    <div class="box-head-title">// CYBER_TRACE_X :: v2.0</div>
+    <div class="box-head-title">PRINCE OS // CORE_v5.0</div>
     <div class="head-dots"><span></span><span></span><span></span></div>
   </div>
 
   <div class="box-body">
-    <div class="brand">NEURAL TRACE SYSTEM // ACTIVE</div>
-    <h1>NUMBER TRACE</h1>
-    <div class="subtitle">ELITE PHONE NUMBER LOOKUP SYSTEM</div>
+    <div class="brand">PRINCE-OS MODULE // READY</div>
+    <h1>PRINCE CHAURASIA</h1>
+    <div class="subtitle">ULTRA PHONE LOOKUP GATEWAY</div>
 
     <div class="divider"></div>
 
-    <label class="input-label">TARGET NUMBER INPUT</label>
+    <label class="input-label">TARGET NUMBER INPUT SOURCE</label>
     <div class="input-wrap">
       <input type="tel" id="number" placeholder="Enter 10-digit number..." maxlength="15" autocomplete="off">
     </div>
-    <div class="err-msg" id="errMsg">⚠ INVALID INPUT — MINIMUM 10 DIGITS REQUIRED</div>
+    <div class="err-msg" id="errMsg">⚠ INVALID ENTRY — MINIMUM 10 DIGITS REQUIRED</div>
 
-    <button class="btn" id="traceBtn" onclick="go()">► INITIATE TRACE ◄</button>
+    <button class="btn" id="traceBtn" onclick="go()">► INITIATE PROTOCOL ◄</button>
 
     <div class="features">
-      <div class="feat"><span class="feat-icon">◈</span> Instant Real-Time Results</div>
-      <div class="feat"><span class="feat-icon">◈</span> Bank-Grade Encryption</div>
-      <div class="feat"><span class="feat-icon">◈</span> Advanced Tracking System</div>
-      <div class="feat"><span class="feat-icon">◈</span> Zero Logs &bull; 100% Private</div>
+      <div class="feat"><span class="feat-icon">⚡</span> Instant Matrix Deep Trace</div>
+      <div class="feat"><span class="feat-icon">⚡</span> End-To-End Node Encryption</div>
+      <div class="feat"><span class="feat-icon">⚡</span> Quantum Framework Tracking</div>
+      <div class="feat"><span class="feat-icon">⚡</span> Verified Secure & Private</div>
     </div>
   </div>
 </div>
 
 <div class="footer">
-  EDUCATIONAL PURPOSE ONLY &nbsp;|&nbsp;
-  Made by <a href="https://github.com/satyamgupta1287-coder">Satyam Gupta</a>
+  EDUCATIONAL PURPOSE ONLY &nbsp;|&nbsp; 
+  DEVELOPED BY <a href="https://github.com/satyamgupta1287-coder">PRINCE CHAURASIA</a>
 </div>
 
 <script>
-/* matrix rain */
+/* matrix rain core */
 var mc=document.getElementById('mc'),ctx=mc.getContext('2d');
 function rsz(){mc.width=window.innerWidth;mc.height=window.innerHeight;}
 rsz(); window.addEventListener('resize',rsz);
-var ch='アイウエオカキクケコ01001101TRACE',dp=[];
-function iDp(){dp=Array(Math.floor(mc.width/14)).fill(1);}
+var ch='01X7PRINCECHAURASIA99',dp=[];
+function iDp(){dp=Array(Math.floor(mc.width/16)).fill(1);}
 iDp(); window.addEventListener('resize',iDp);
 setInterval(function(){
-  ctx.fillStyle='rgba(1,10,1,0.05)';ctx.fillRect(0,0,mc.width,mc.height);
-  ctx.font='13px monospace';
+  ctx.fillStyle='rgba(3,7,18,0.06)';ctx.fillRect(0,0,mc.width,mc.height);
+  ctx.font='12px monospace';
   for(var i=0;i<dp.length;i++){
-    ctx.fillStyle=Math.random()>0.9?'#00d4ff':'#00ff41';
-    ctx.globalAlpha=Math.random()*0.5+0.3;
-    ctx.fillText(ch[Math.floor(Math.random()*ch.length)],i*14,dp[i]*14);
-    if(dp[i]*14>mc.height&&Math.random()>0.975)dp[i]=0;
+    ctx.fillStyle=Math.random()>0.92?'#4facfe':'#00f2fe';
+    ctx.globalAlpha=Math.random()*0.4+0.2;
+    ctx.fillText(ch[Math.floor(Math.random()*ch.length)],i*16,dp[i]*16);
+    if(dp[i]*16>mc.height&&Math.random()>0.98)dp[i]=0;
     dp[i]++;
   }
   ctx.globalAlpha=1;
-},40);
+},45);
 
-/* sound */
+/* sound synth */
 var aC=new(window.AudioContext||window.webkitAudioContext)();
 function beep(f,d){
   try{
     var o=aC.createOscillator(),g=aC.createGain();
-    o.frequency.value=f; g.gain.value=0.06;
+    o.frequency.value=f; g.gain.value=0.04;
     o.connect(g); g.connect(aC.destination);
     o.start(); o.stop(aC.currentTime+d);
   }catch(e){}
 }
 
-/* go */
+/* execution routing */
 function go(){
   var num=document.getElementById('number').value.trim();
   var err=document.getElementById('errMsg');
@@ -355,23 +379,25 @@ function go(){
 
   if(!num||num.length<10){
     err.style.display='block';
-    beep(200,0.15);
-    document.getElementById('number').style.borderColor='#ff0080';
-    document.getElementById('number').style.boxShadow='0 0 12px rgba(255,0,128,0.3)';
+    beep(220,0.15);
+    document.getElementById('number').style.borderColor='#f43f5e';
+    document.getElementById('number').style.boxShadow='0 0 12px rgba(244,63,94,0.2)';
     return;
   }
 
   err.style.display='none';
-  beep(600,0.08); beep(900,0.08);
+  beep(500,0.08); beep(850,0.08);
 
   btn.disabled=true;
-  btn.textContent='⟳ INITIATING TRACE...';
-  btn.style.color='#00d4ff';
-  btn.style.borderColor='#00d4ff';
+  btn.textContent='⟳ EXECUTING PROTOCOL...';
+  btn.style.color='#ffffff';
+  btn.style.background='var(--accent-purple)';
+  btn.style.borderColor='var(--accent-purple)';
+  btn.style.boxShadow='0 0 20px rgba(79, 172, 254, 0.4)';
 
   setTimeout(function(){
     window.location.href='loading.html?num='+encodeURIComponent(num);
-  },400);
+  },450);
 }
 
 document.getElementById('number').addEventListener('keypress',function(e){
