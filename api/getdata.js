@@ -33,6 +33,14 @@ export default async function handler(req, res) {
       });
     }
 
+    if (data.msg === "key not found" || data.success === false) {
+      return res.status(200).json({
+        status: false,
+        message: "Key expired ho chuki h, new key daalna zaroori h",
+        raw: data
+      });
+    }
+
     return res.status(200).json(data);
 
   } catch (err) {
