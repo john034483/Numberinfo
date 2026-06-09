@@ -6,15 +6,14 @@ export default async function handler(req, res) {
   }
 
   try {
-    const url = `https://pawan-osint.vercel.app/api?apikey=toxicadminn&number=${num}`;
-    // 🔥 IMPORTANT: fetch ko safe banaya
+    const url = `https://tabbopro.vercel.app/api/key-tabbo/number?key=TABBO_DEMO_003&num=${num}`;
+    
     const response = await fetch(url, {
       method: "GET"
     });
 
     const text = await response.text();
 
-    // 🔥 agar empty response aaye to crash na ho
     if (!text || text.trim() === "") {
       return res.status(200).json({
         status: false,
