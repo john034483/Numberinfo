@@ -5,11 +5,19 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "No number provided" });
   }
 
+  // HTML me chal rahi current exact key
+  const currentKey = "TABBO_DEMO_003"; 
+
   try {
-    const url = `https://tabbopro.vercel.app/api/key-tabbo/number?key=TABBO_DEMO_003&num=${num}`;
+    const url = `https://tabbopro.vercel.app/api/key-tabbo/number?key=${currentKey}&num=${num}`;
     
+    // Request config ko exact browser format me bhej rahe hain
     const response = await fetch(url, {
-      method: "GET"
+      method: "GET",
+      headers: {
+        "Accept": "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      }
     });
 
     const text = await response.text();
@@ -22,7 +30,6 @@ export default async function handler(req, res) {
     }
 
     let data;
-
     try {
       data = JSON.parse(text);
     } catch (e) {
@@ -33,11 +40,13 @@ export default async function handler(req, res) {
       });
     }
 
-    if (data.msg === "key not found" || data.success === false) {
+    // Agar server key fail ka response deta hai
+    if (data.msg === "key not found" || data.success === false || data.status === "failed") {
       return res.status(200).json({
         status: false,
-        message: "Key expired ho chuki h, new key daalna zaroori h",
-        raw: data
+        message: "Server returned key error",
+        error: "KEY_NOT_FOUND",
+        suggestion: "Check if the key TABBO_DEMO_003 is still active on the main server"
       });
     }
 
