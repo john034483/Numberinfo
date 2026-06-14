@@ -5,23 +5,16 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "No number provided" });
   }
 
-  // HTML me chal rahi current exact key
-  const currentKey = "TABBO_DEMO_003"; 
-
   try {
-    const url = `https://tabbopro.vercel.app/api/key-tabbo/number?key=${currentKey}&num=${num}`;
-    
-    // Request config ko exact browser format me bhej rahe hain
+    const url = `https://numberinfobysatyam.vercel.app/?apikey=satyam&number=${num}`;
+    // 🔥 IMPORTANT: fetch ko safe banaya
     const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Accept": "application/json",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-      }
+      method: "GET"
     });
 
     const text = await response.text();
 
+    // 🔥 agar empty response aaye to crash na ho
     if (!text || text.trim() === "") {
       return res.status(200).json({
         status: false,
@@ -30,6 +23,7 @@ export default async function handler(req, res) {
     }
 
     let data;
+
     try {
       data = JSON.parse(text);
     } catch (e) {
@@ -37,16 +31,6 @@ export default async function handler(req, res) {
         status: false,
         message: "Invalid JSON from API",
         raw: text
-      });
-    }
-
-    // Agar server key fail ka response deta hai
-    if (data.msg === "key not found" || data.success === false || data.status === "failed") {
-      return res.status(200).json({
-        status: false,
-        message: "Server returned key error",
-        error: "KEY_NOT_FOUND",
-        suggestion: "Check if the key TABBO_DEMO_003 is still active on the main server"
       });
     }
 
