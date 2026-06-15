@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const url = `https://numberinfobysatyam.vercel.app/?apikey=satyam&numb=${num}`;
+    const url = `https://numberinfoprince.vercel.app/?apikey=prince&numb=${num}`;
     // 🔥 IMPORTANT: fetch ko safe banaya
     const response = await fetch(url, {
       method: "GET"
